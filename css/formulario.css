@@ -94,3 +94,9 @@ button#envio:hover {
         font-size: 14px;
     }
 }
+.input-contenedor {
+    display: flex;
+    align-items: center;
+  }
+  
+ 

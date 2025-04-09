@@ -8,7 +8,6 @@ const validarmenu = () => {
 
 const validarimagen = () => {
   
-    //Creamos el elemento imagen que contiene las características solicitadas por eneunciado y un contenedor en donde pondremos la imagen
     let abririmagen = document.createElement("img");
     abririmagen.id = "imagengrande"
     abririmagen.src = "../images/plantas.jpg";
@@ -41,17 +40,13 @@ const validarimagen = () => {
     cerrarImagen.style.cursor = "pointer";
   
   
-    //Tomamos los elementos necesarios para poner la imagen
     let pagina = document.querySelector(".main-container");
   
-    //Agregamos la imagen al contenedor que creamos para ella
     contenedorImagen.appendChild(abririmagen)
     contenedorImagen.appendChild(cerrarImagen)
 
-    //Ahora situamos el contenedor con la imagen en main-container
     pagina.appendChild(contenedorImagen);
   
-    // Agregamos un evento para cerrar la imagen que fue agrandada
     cerrarImagen.addEventListener("click", () => {
       pagina.removeChild(contenedorImagen);
     });

@@ -1,3 +1,5 @@
+# Tarea 1 - Desarrollo Web
+
 En esta entrega se tomaron las siguientes decisiones:
 
 1. En  la portada se optó por ubicar los botones justo al medio, inicio y en toda la página para distribuir de manera homogénea el contenido dentro de ella y que fuera visible, lo cual facilitaría la lectura y no daría espacios a malos entendidos como por ejemplo que el usuario piense que la página no esta cargando. Además, se asignaron colores cafés para que fuera más armónico el color sin ser muy molesto o llamativo. Dado que en el formulario no hay muchas opciones de botones se decidió por 

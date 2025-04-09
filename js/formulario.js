@@ -172,9 +172,50 @@ const validateTema = (tema) => {
     }
 };
 
+const otroFile = () => {
+
+    let files = document.querySelectorAll('#myForm input[type="file"]');
+    if (files.length >= 5) {
+        return;
+    }
+
+    let div = document.createElement("div");
+    div.id = "otroFilediv";
+    let label = document.createElement("label");
+    label.setAttribute("for", "otroFilelabel");
+
+    let input = document.createElement("input");
+    input.type = "file";
+    input.id = "otroFile";
+    input.name = "otroFile";
+    input.accept = "image/*";
+
+    div.appendChild(label);
+    div.appendChild(input);
+
+    let fileAnterior = myForm["file"];
+    fileAnterior.parentNode.insertBefore(div, fileAnterior.nextSibling);
+}
+
+let otro_file = document.getElementById("otro_file");
+otro_file.addEventListener("click", otroFile);
+
+const validateFiles = (filesInput) => {
+    let files = document.querySelectorAll('#myForm input[type="file"]');
+    let valid = false;
+
+    files.forEach(fileInput => {
+        valid = fileInput.type == "image/*"
+        if (fileInput.files.length > 0) {
+            valid = true;
+        }
+    });
+
+    return valid; 
+};
+
 const validatemyForm = () => {
 
-    // obtener elementos del DOM usando el nombre del formulario.
     let myForm = document.forms["myForm"];
     let region = myForm["region"].value;
     let comuna = myForm["comuna"].value;
@@ -187,7 +228,7 @@ const validatemyForm = () => {
     let termino = myForm["termino"].value;
     let descripcion = myForm["descripcion"].value;
     let tema = myForm["tema"].value;
-    let files = document.getElementById('files');
+    let files = document.getElementById('file');
 
     let invalidInputs = [];
     let isValid = true;
@@ -228,6 +269,9 @@ const validatemyForm = () => {
         }
     if (!validateTema(tema)) {
     setInvalidInput("Escriba un tema válido");
+    }
+    if (!validateFiles(files)) {
+        setInvalidInput("Cantidad mínima de archivos 1 y máxima 5");
     }
 
       // finalmente mostrar la validación
@@ -322,11 +366,13 @@ window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('termino');
     const now = new Date();
+    
+    now.setHours(now.getHours() + 3);
 
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
-    const hour = String(now.getHours()+3).padStart(2, '0');
+    const hour = String(now.getHours()).padStart(2, '0');
     const minute = String(now.getMinutes()).padStart(2, '0');
 
     const localDateTime = `${year}-${month}-${day}T${hour}:${minute}`;

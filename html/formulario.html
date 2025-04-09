@@ -52,7 +52,7 @@
             <h2>¿Cuando y de qué trata?</h2>
 
             <label for="inicio">Día y hora de inicio</label>
-            <input id="inicio" name="inicio" type="datetime-local"><br>
+            <input id="inicio" name="inicio" type="datetime-local" required><br>
 
             <label for="termino">Día y hora de término</label>
             <input id="termino" name="termino" type="datetime-local"><br>
@@ -66,7 +66,13 @@
             </select><br>
 
             <label for="file">Fotos</label>
-            <input type="file" name="file" id="file" multiple accept="image/*" required><br>
+            <div class="input_contenedor">
+              <input type="file" name="file" id="file" accept="image/*" required> 
+              <button type="button" id="otro_file">
+                Agregar otra foto
+              </button>
+            </div>
+            <br>
         </section>
 
         <div class="botones">
