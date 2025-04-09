@@ -86,7 +86,7 @@ const validateContacto = (contacto) => {
     }
 
     if (contacto == "Otra"){
-        otroInput = document.getElementById("otroInput");
+        let otroInput = document.getElementById("otroInput");
         if (!otroInput) return false; 
         return validateOtra(otroInput.value);
     }
@@ -153,23 +153,17 @@ const inputTema = () => {
 }
 
 const validateTema = (tema) => {
-    if(!tema) return false;
+    if (!tema) return false;
     if (tema != "Otro") return true;
 
-    const validateOtro = (otro) => {
-        if (!otro) return false; 
-        let lengthValidmax = otro.trim().length <= 15;
-        let lengthValidmin = otro.trim().length >= 3;
+    const tema2 = document.getElementById('otroTema');
+    if (!tema2) return false; 
 
-        return lengthValidmax && lengthValidmin
-    }
+    const value = tema2.value ? tema2.value.trim() : ""; 
+    const lengthValidmax = value.length <= 15;
+    const lengthValidmin = value.length >= 3;
 
-    if (tema == "Otro"){
-        otroTema = document.getElementById("otroTema");
-        if (!otroTema) return false; 
-
-        return validateOtro(otroTema.value);
-    }
+    return lengthValidmax && lengthValidmin;
 };
 
 const otroFile = () => {
@@ -256,7 +250,7 @@ const validatemyForm = () => {
     setInvalidInput("Escriba un número válido");
     }
     if (!validateContacto(contacto)) {
-    setInvalidInput("La foma de contácto debe ser de mínimo 4 caráctares");
+        setInvalidInput("La foma de contácto debe ser de mínimo 4 caráctares");
     }
     if (!validateInicio(inicio)) {
     setInvalidInput("Ingrese una fecha de inicio válida");
@@ -268,7 +262,7 @@ const validatemyForm = () => {
         setInvalidInput("Ingrese una descripción de al menos 4 carácteres");
         }
     if (!validateTema(tema)) {
-    setInvalidInput("Escriba un tema válido");
+        setInvalidInput("Escriba un tema válido");
     }
     if (!validateFiles(files)) {
         setInvalidInput("Cantidad mínima de archivos 1 y máxima 5");
