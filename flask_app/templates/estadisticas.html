@@ -1,4 +1,4 @@
-{% extends 'formulario.html' %}
+{% extends 'base.html' %}
 {% block title %} Estadisticas {% endblock %}
 {% block css %}
     <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/estadisticas.css')}}"
@@ -19,5 +19,5 @@
     </div>
 {% endblock %}
 {% block javascript %}
-<script lang="javascript" src="{{ url_for('static', filename='js/estadisticas.js') }}"></script>
+
 {% endblock %}
