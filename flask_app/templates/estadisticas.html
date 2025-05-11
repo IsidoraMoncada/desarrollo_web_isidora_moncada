@@ -1,0 +1,23 @@
+{% extends 'formulario.html' %}
+{% block title %} Estadisticas {% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/estadisticas.css')}}"
+    >
+{% endblock %}
+{% block content %}
+    <h1>Estadísticas</h1>
+    <h2>Cantidad de actividades por día</h2>
+    <img src="../static/images/lineas.jpg" alt="" height="400"><br>
+    <h2>Cantidad total de actividades por tipo</h2>
+    <img src="../static/images/torta.jpg" alt="" height="400"><br>
+    <h2>Cantidad de actividades en el mes por jornada</h2>
+    <img src="../static/images/barras.jpg" alt="" height="400"><br>
+    <div>
+        <a href="{{ url_for('index') }}" style="font-size: 18px; color: #715331; text-decoration: underline;">
+            Volver a la portada
+        </a>
+    </div>
+{% endblock %}
+{% block javascript %}
+<script lang="javascript" src="{{ url_for('static', filename='js/estadisticas.js') }}"></script>
+{% endblock %}

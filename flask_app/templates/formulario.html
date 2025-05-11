@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %} Nueva actividad {% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/formulario.css')}}"
+    >
+{% endblock %}
+{% block content %}  
+    <div class="container">
+      <h1>Agregue una nueva actividad</h1>
+      <div id="val-box" hidden>
+        <div id="val-msg"></div>
+        <ul id="val-list"></ul>
+      </div>
+
+      <form id= "myForm" name="myForm" class="formulario" method="POST" action="{{ url_for('pregunta_confirmacion') }}">
+        <section id="seccion1">
+            <h2>¿Dónde?</h2>
+
+            <label for="region">Región</label>
+            <select name="region" id="region" required>
+                <option value="">Seleccione una región</option>
+            </select><br>
+
+            <label for="comuna">Comuna</label>
+            <select name="comuna" id="comuna" required>
+                <option value="">Seleccione una comuna</option>
+            </select><br>
+
+            <label for="sector">Sector</label>
+            <input id="sector" name="sector" type="text" maxlength="100"><br>
+        </section>
+
+        <section id="seccion2">
+            <h2>¿Quién organiza?</h2>
+
+            <label for="name">Nombre</label>
+            <input id="name" name="name" type="text" maxlength="200" required><br>
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" maxlength="100" required><br>
+
+            <label for="numero">Número de teléfono</label>
+            <input id="numero" name="numero" type="tel"><br>
+
+            <label for="contacto">Contactar por</label>
+            <select name="contacto" id="contacto" onchange="inputOtro()">
+                <option value="">Seleccione una forma de contacto</option>
+            </select><br>
+        </section>
+        <section id="seccion3">
+            <h2>¿Cuando y de qué trata?</h2>
+
+            <label for="inicio">Día y hora de inicio</label>
+            <input id="inicio" name="inicio" type="datetime-local" required><br>
+
+            <label for="termino">Día y hora de término</label>
+            <input id="termino" name="termino" type="datetime-local"><br>
+
+            <label for="descripcion">Descripción del evento</label>
+            <textarea id="descripcion" name="descripcion" rows="10" cols="50"></textarea> <br>
+
+            <label for="tema">Tema</label>
+            <select name="tema" id="tema"  onchange="inputTema()" required>
+                <option value="">Seleccione una tema</option>
+            </select><br>
+
+            <label for="file">Fotos</label>
+            <div class="input_contenedor">
+              <input type="file" name="file" id="file" accept="image/*" required> 
+              <button type="button" id="otro_file">
+                Agregar otra foto
+              </button>
+            </div>
+            <br>
+        </section>
+
+        <div class="botones">
+          <button type="submit" id="envio">
+            Agregar esta actividad
+          </button>
+        </div>
+      </form>
+    </div>
+{% endblock %}
+{% block javascript %}
+<script lang="javascript" src="{{ url_for('static', filename='js/formulario.js') }}"></script>
+<script lang="javascript" src="{{ url_for('static', filename='js/select.js') }}"></script>
+
+{% endblock %}
