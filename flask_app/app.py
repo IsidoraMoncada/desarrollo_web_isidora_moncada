@@ -2,9 +2,11 @@ from flask import Flask, request, render_template, redirect, url_for, session, r
 from werkzeug.utils import secure_filename
 import hashlib
 import os
-UPLOAD_FOLDER = 'static/uploads'
+import filetype
 
+UPLOAD_FOLDER = 'static/uploads'
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'una_clave_secreta_segura'
 
 
@@ -38,10 +40,48 @@ def volver_formulario():
 @app.route("/pregunta_confirmacion", methods=["POST", "GET"])
 def pregunta_confirmacion():
     if request.method == "POST":
-        datos = request.form.to_dict()  # Aquí accedes a los datos enviados por el formulario
-        print(datos)  # Esto es para prueba, luego lo puedes guardar en BD, etc.
-        session['datos_formulario'] = datos
+        region = request.form.get("region")
+        comuna = request.form.get("comuna")
+        sector = request.form.get("sector")
+        name = request.form.get("name")
+        email = request.form.get("email")
+        numero = request.form.get("numero")
+        contacto = request.form.get("contacto")
+        inicio = request.form.get("inicio")
+        termino = request.form.get("termino")
+        descripcion = request.form.get("descripcion")
+        tema = request.form.get("tema")
+        files = request.files.getlist("file")
 
+        datos = {
+            "region": region,
+            "comuna": comuna,
+            "sector": sector,
+            "name": name,
+            "email": email,
+            "numero": numero,
+            "contacto": contacto,
+            "inicio": inicio,
+            "termino": termino,
+            "descripcion": descripcion,
+            "tema": tema,
+            "files": []
+        }
+
+        for file in files:
+            if file and file.filename:
+                _filename = hashlib.sha256(
+                    secure_filename(file.filename) 
+                    .encode("utf-8") 
+                    ).hexdigest()
+                _extension = filetype.guess(file).extension
+                img_filename = f"{_filename}.{_extension}"
+                
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], img_filename))
+                datos["files"].append(img_filename)
+
+        session['datos_formulario'] = datos
+        print(datos)
         confirmacion_html = """
         <html lang="es">
         <head>
@@ -82,10 +122,13 @@ def pregunta_confirmacion():
         </body>
         </html>
         """
-        # Opcional: redirigir a una página de confirmación
         return render_template_string(confirmacion_html)
+    
+    else:
+        return render_template("formulario.html")
+    
 
-
+#Ruta para confirmar que los datos han sido agregados
 @app.route("/agrego_actividad", methods=["POST", "GET"])
 def agrego_actividad():
     datos = session.get('datos_formulario')
@@ -120,7 +163,6 @@ def agrego_actividad():
             </body>
             </html>
             """
-
 
 if __name__ == "__main__":
     app.run(debug=True)
