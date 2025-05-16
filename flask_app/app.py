@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 import hashlib
 import os
 import filetype
+from databases import db
 
 UPLOAD_FOLDER = 'static/uploads'
 app = Flask(__name__)
@@ -35,12 +36,16 @@ def ver_estadisticas():
 @app.route('/volver_formulario')
 def volver_formulario():
     return redirect('/agregar_actividad')
+    
 
-#Ruta por si el usuario decide sí se devolverá o si agregara la actividad
-@app.route("/pregunta_confirmacion", methods=["POST", "GET"])
-def pregunta_confirmacion():
+#Ruta para confirmar que los datos han sido agregados
+@app.route("/agrego_actividad", methods=["POST", "GET"])
+def agrego_actividad():
+
     if request.method == "POST":
-        region = request.form.get("region")
+
+        session = db.SessionLocal()
+
         comuna = request.form.get("comuna")
         sector = request.form.get("sector")
         name = request.form.get("name")
@@ -50,23 +55,8 @@ def pregunta_confirmacion():
         inicio = request.form.get("inicio")
         termino = request.form.get("termino")
         descripcion = request.form.get("descripcion")
-        tema = request.form.get("tema")
         files = request.files.getlist("file")
 
-        datos = {
-            "region": region,
-            "comuna": comuna,
-            "sector": sector,
-            "name": name,
-            "email": email,
-            "numero": numero,
-            "contacto": contacto,
-            "inicio": inicio,
-            "termino": termino,
-            "descripcion": descripcion,
-            "tema": tema,
-            "files": []
-        }
 
         for file in files:
             if file and file.filename:
@@ -78,62 +68,9 @@ def pregunta_confirmacion():
                 img_filename = f"{_filename}.{_extension}"
                 
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], img_filename))
-                datos["files"].append(img_filename)
 
-        session['datos_formulario'] = datos
-        print(datos)
-        confirmacion_html = """
-        <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <title>Confirmación</title>
-            <style>
-                #validationBox {
-                    background-color: #ddffdd;
-                    border-left: 6px solid #4CAF50;
-                    padding: 20px;
-                    margin: 40px auto;
-                    max-width: 600px;
-                    font-family: Arial, sans-serif;
-                }
-                #validationButtons button {
-                    margin-top: 10px;
-                    margin-right: 10px;
-                    padding: 10px 15px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-            
-            </style>
-        </head>
-        <body>
-            <div id="validationBox">
-                <p id="validationMessage">¿Está seguro que desea agregar esta actividad?</p>
-                <div>
-                    <form action="/agrego_actividad" method="POST" style="display:inline;">
-                        <button type="submit">Sí, estoy seguro</button>
-                    </form>
-                    <form action="/volver_formulario" method="GET" style="display:inline;">
-                        <button type="submit">No, quiero volver al formulario</button>
-                    </form>
-                </div>
-            </div>
-        </body>
-        </html>
-        """
-        return render_template_string(confirmacion_html)
-    
-    else:
-        return render_template("formulario.html")
-    
+        db.create_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion)
 
-#Ruta para confirmar que los datos han sido agregados
-@app.route("/agrego_actividad", methods=["POST", "GET"])
-def agrego_actividad():
-    datos = session.get('datos_formulario')
-
-    if datos:
         return """
             <html>
             <head>
@@ -163,6 +100,13 @@ def agrego_actividad():
             </body>
             </html>
             """
+    else:
+        return redirect(url_for("agrego_actividad"))
+
+#Ruta para volver al formulario, utiliza una ruta antes creada y vuelve a llenar con los datos que antes se llenaron si es que el usuario se arrepiente
+@app.route('/informacion')
+def informacion():
+    return render_template('informacion.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

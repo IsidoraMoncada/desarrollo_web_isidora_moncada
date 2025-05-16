@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block title %} Información de la actividad {% endblock %}
 {% block css %}
-{% block css %}
     <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/informacion.css')}}"
     >
 {% endblock %}
@@ -27,9 +26,12 @@
                 </span>
             </button>
         </div><br>
-        
-        <button id="menu" type="button">Volver al menú</button>
-        <button id="listado" type="button">Volver al listado</button>
+        <div>
+            <a href="{{ url_for('index') }}"><button type="submit" id="menu">Volver al menú</button></a> 
+        </div>
+        <div>
+            <a href="{{ url_for('ver_listado') }}"><button type="submit" id="listado">Volver al listado</button></a> 
+        </div>
 
     </div>
 {% endblock %}

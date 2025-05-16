@@ -381,4 +381,3 @@ window.addEventListener('DOMContentLoaded', () => {
 
 let agregarBtn = document.getElementById("envio");
 agregarBtn.addEventListener("click", validatemyForm);
-
