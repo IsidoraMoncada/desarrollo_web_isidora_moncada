@@ -131,8 +131,56 @@ def create_actividad(comuna_id, sector, nombre, email, celular, dia_hora_inicio,
     
     session.add(nueva_actividad)
     session.commit()
+    session.refresh(nueva_actividad)
     session.close()
 
+    return nueva_actividad
 
+def add_fotos(ruta_archivo, nombre_archivo, actividad_id):
+    session = SessionLocal()
+
+    nuevas_fotos = Foto(
+        ruta_archivo = ruta_archivo,
+        nombre_archivo = nombre_archivo,
+        actividad_id = actividad_id
+    )
+
+    session.add(nuevas_fotos)
+    session.commit()
+    session.refresh(nuevas_fotos)
+    session.close()
+
+    return nuevas_fotos
+
+def add_contactos(nombre, identificador, actividad_id):
+    session = SessionLocal()
+    contactos = ContactarPor(
+        nombre = nombre,
+        identificador = identificador,
+        actividad_id = actividad_id
+        )
+
+    session.add(contactos)
+    session.commit()
+    session.refresh(contactos)
+    session.close()
+
+    return contactos
+
+def add_temas(tema, glosa_otro, actividad_id):
+    session = SessionLocal()
+
+    temas = ActividadTema(
+        tema = tema,
+        glosa_otro=glosa_otro if tema.lower() == "otro" else None,
+        actividad_id = actividad_id
+    )
+
+    session.add(temas)
+    session.commit()
+    session.refresh(temas)
+    session.close()
+
+    return temas
 
 

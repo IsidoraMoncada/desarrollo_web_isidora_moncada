@@ -4,11 +4,12 @@ import hashlib
 import os
 import filetype
 from databases import db
+from databases.db import TemaEnum
 
 UPLOAD_FOLDER = 'static/uploads'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'una_clave_secreta_segura'
+app.secret_key = "s3cr3t_k3y"
 
 
 #Ruta para volver al indice
@@ -46,17 +47,20 @@ def agrego_actividad():
 
         session = db.SessionLocal()
 
+        region = request.form.get("region")
         comuna = request.form.get("comuna")
         sector = request.form.get("sector")
         name = request.form.get("name")
         email = request.form.get("email")
         numero = request.form.get("numero")
-        contacto = request.form.get("contacto")
         inicio = request.form.get("inicio")
         termino = request.form.get("termino")
         descripcion = request.form.get("descripcion")
-        files = request.files.getlist("file")
 
+        actividad = db.create_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion)
+
+        files = request.files.getlist("file")
+        fotos = []
 
         for file in files:
             if file and file.filename:
@@ -68,8 +72,9 @@ def agrego_actividad():
                 img_filename = f"{_filename}.{_extension}"
                 
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], img_filename))
-
-        db.create_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion)
+            
+            foto = db.add_fotos(os.path.join(app.config["UPLOAD_FOLDER"], img_filename), img_filename, actividad.id)
+            fotos.append(foto)
 
         return """
             <html>

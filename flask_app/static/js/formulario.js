@@ -90,7 +90,6 @@ const validateOtroContacto = (contacto) => {
 const validateContacto = (contacto) => {
     return validateSelectContacto(contacto) || validateOtroContacto(contacto)
 };
-
 const validateInicio = (inicio) => {
     if (!inicio) return false; 
 
@@ -120,17 +119,12 @@ const validateDescripcion = (descripcion) => {
 };
 
 const inputTema = () => {
-    let myForm = document.forms["myForm"];
-    let otro = myForm["tema"].value
+    const checkboxOtro = document.getElementById("check_otro");
+    const yaExiste = document.getElementById("div_otroTema");
 
-    let viejoInput = document.getElementById("otroTema");
-    if (viejoInput) {
-        viejoInput.remove();
-    }
-
-    if (otro === "Otro" ){
-        let div = document.createElement("div");
-        div.id = "otroTema";
+    if (checkboxOtro.checked && !yaExiste) {
+        const div = document.createElement("div");
+        div.id = "div_otroTema";
 
         let label = document.createElement("label");
         label.setAttribute("for", "otroTema");
@@ -146,24 +140,42 @@ const inputTema = () => {
         div.appendChild(label);
         div.appendChild(input);
 
-        let temaSelect = myForm["tema"];
-        temaSelect.parentNode.insertBefore(div, temaSelect.nextSibling);
+        checkboxOtro.parentNode.insertAdjacentElement("afterend", div)
     }
+
+    if (!checkboxOtro.checked && yaExiste) {
+        yaExiste.remove();
+    }
+        
 }
 
 const validateTema = (tema) => {
-    if (!tema) return false;
-    if (tema != "Otro") return true;
+    const checkboxOtro = document.getElementById("check_otro");
+    const checkboxes = document.getElementsByName("tema");
 
-    const tema2 = document.getElementById('otroTema');
-    if (!tema2) return false; 
+    let haySeleccion = false;
 
-    const value = tema2.value ? tema2.value.trim() : ""; 
-    const lengthValidmax = value.length <= 15;
-    const lengthValidmin = value.length >= 3;
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            haySeleccion = true;
 
-    return lengthValidmax && lengthValidmin;
-};
+            if (checkboxes[i] === checkboxOtro) {
+                const inputOtro = document.getElementById("otroTema");
+                if (!inputOtro) return false;
+
+                const valor = inputOtro.value.trim();
+                const lengthValidmin = valor.length >= 3;
+                const lengthValidmax = valor.length <= 15;
+
+                if (!lengthValidmin || !lengthValidmax) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return haySeleccion;
+}
 
 const otroFile = () => {
 
@@ -173,21 +185,19 @@ const otroFile = () => {
     }
 
     let div = document.createElement("div");
-    div.id = "otroFilediv";
     let label = document.createElement("label");
     label.setAttribute("for", "otroFilelabel");
 
     let input = document.createElement("input");
     input.type = "file";
-    input.id = "otroFile";
-    input.name = "otroFile";
+    input.name = "file";
     input.accept = "image/*";
 
     div.appendChild(label);
     div.appendChild(input);
 
-    let fileAnterior = myForm["file"];
-    fileAnterior.parentNode.insertBefore(div, fileAnterior.nextSibling);
+    let ultimoInput = files[files.length - 1];
+    ultimoInput.parentNode.insertBefore(div, ultimoInput.nextSibling);
 }
 
 let otro_file = document.getElementById("otro_file");
@@ -248,7 +258,7 @@ const validatemyForm = () => {
     if (!validateNumero(numero)) {
     setInvalidInput("Escriba un número válido");
     }
-    if (!validateContacto(contacto)) {
+    if (!validateContacto()) {
         setInvalidInput("La foma de contácto debe ser de mínimo 4 caráctares");
     }
     if (!validateInicio(inicio)) {

@@ -46,6 +46,7 @@
             <select name="contacto" id="contacto" onchange="inputOtro()">
                 <option value="">Seleccione una forma de contacto</option>
             </select><br>
+        
         </section>
         <section id="seccion3">
             <h2>¿Cuando y de qué trata?</h2>
@@ -60,9 +61,16 @@
             <textarea id="descripcion" name="descripcion" rows="10" cols="50"></textarea> <br>
 
             <label for="tema">Tema</label>
-            <select name="tema" id="tema"  onchange="inputTema()" required>
-                <option value="">Seleccione una tema</option>
-            </select><br>
+            <label><input type="checkbox" name="tema" value="música"> Música</label><br>
+            <label><input type="checkbox" name="tema" value="deporte"> Deporte</label><br>
+            <label><input type="checkbox" name="tema" value="ciencias"> Ciencias</label><br>
+            <label><input type="checkbox" name="tema" value="religión"> Religión</label><br>
+            <label><input type="checkbox" name="tema" value="política"> Política</label><br>
+            <label><input type="checkbox" name="tema" value="tecnología"> Tecnología</label><br>
+            <label><input type="checkbox" name="tema" value="juegos"> Juegos</label><br>
+            <label><input type="checkbox" name="tema" value="baile"> Baile</label><br>
+            <label><input type="checkbox" name="tema" value="comida"> Comida</label><br>
+            <label><input type="checkbox" id="check_otro" name="tema" value="otro" onchange="inputTema()"> Otro</label><br>
 
             <label for="file">Fotos</label>
             <div class="input_contenedor">
