@@ -225,3 +225,9 @@ def get_total_actividades():
     total = session.query(Actividad).count()
     session.close()
     return total
+
+def get_actividad_by_id(id):
+    session = SessionLocal()
+    actividad_by_id = session.query(Actividad).filter_by(id=id).first()
+    session.close()
+    return actividad_by_id

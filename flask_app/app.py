@@ -67,6 +67,7 @@ def ver_listado():
             tema_final = tema.tema.value
 
         data.append({
+            "id": actividad.id,
             "inicio": actividad.dia_hora_inicio,
             "termino": actividad.dia_hora_termino,
             "comuna": comuna.nombre,
@@ -174,9 +175,32 @@ def agrego_actividad():
         return redirect(url_for("agrego_actividad"))
 
 #Ruta para volver al formulario, utiliza una ruta antes creada y vuelve a llenar con los datos que antes se llenaron si es que el usuario se arrepiente
-@app.route('/informacion')
-def informacion():
-    return render_template('informacion.html')
+@app.route('/informacion/<int:id>')
+def informacion(id):
+    data = []
+    actividad = db.get_actividad_by_id(id)
+    comuna = db.get_comuna_by_id(actividad.comuna_id)
+    foto = db.get_foto_by_actividad_id(actividad.id)
+    ruta = foto.ruta_archivo
+    tema = db.get_tema_by_actividad_id(actividad.id)
+    tema_final = ""
+    if tema.tema.value == "otro2":
+        tema_final = tema.glosa_otro
+    else:
+        tema_final = tema.tema.value
+
+    data.append({
+        "id": actividad.id,
+        "inicio": actividad.dia_hora_inicio,
+        "termino": actividad.dia_hora_termino,
+        "comuna": comuna.nombre,
+        "sector": actividad.sector,
+        "tema": tema_final,
+        "descripcion": actividad.descripcion,
+        "organizador": actividad.nombre,
+        "foto": ruta
+    })
+    return render_template('informacion.html', data=data)
 
 if __name__ == "__main__":
     app.run(debug=True)

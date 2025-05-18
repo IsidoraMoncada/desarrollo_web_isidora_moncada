@@ -13,8 +13,8 @@
                 <tr>
                     <td>Inicio</td><td>Término</td><td>Comuna</td><td>Sector</td><td>Tema</td><td> Nombre Organizador</td><td> Total fotos</td>
                 </tr>
-                {% for actividad in data%}
-                <tr >
+                {% for actividad in data %}
+                <tr onclick="window.location='{{ url_for('informacion', id = actividad.id) }}'">
                     <td>{{ actividad.inicio }}</td><td>{{ actividad.termino }}</td><td>{{ actividad.comuna }}</td><td>{{ actividad.sector }}</td><td>{{ actividad.tema }}</td><td>{{ actividad.organizador }}</td><td>{{ actividad.fotos }}</td>  
                 </tr>
                 {% endfor%}
