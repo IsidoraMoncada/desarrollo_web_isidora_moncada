@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, r
 from werkzeug.utils import secure_filename
 import hashlib
 import os
+from utils.validations import validate_agregar_actividad, validate_file, validate_temas
 import filetype
 from databases import db
 from databases.db import TemaEnum, Actividad
@@ -97,7 +98,6 @@ def agrego_actividad():
     if request.method == "POST":
 
         session = db.SessionLocal()
-
         region = request.form.get("region")
         comuna = request.form.get("comuna")
         sector = request.form.get("sector")
@@ -107,40 +107,48 @@ def agrego_actividad():
         inicio = request.form.get("inicio")
         termino = request.form.get("termino")
         descripcion = request.form.get("descripcion")
-
-        actividad = db.create_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion)
+        error = ""
 
         files = request.files.getlist("file")
         fotos = []
-
-        for file in files:
-            if file and file.filename:
-                _filename = hashlib.sha256(
-                    secure_filename(file.filename) 
-                    .encode("utf-8") 
-                    ).hexdigest()
-                _extension = filetype.guess(file).extension
-                img_filename = f"{_filename}.{_extension}"
-                
-                file.save(os.path.join(app.config["UPLOAD_FOLDER"], img_filename))
-            
-            foto = db.add_fotos(os.path.join(app.config["UPLOAD_FOLDER"], img_filename), img_filename, actividad.id)
-            fotos.append(foto)
-
 
         posibles_temas = ["música", "deporte", "ciencias", "religión", "política", "tecnología", "juegos", "baile", "comida", "otro2"]
         temas = []
         for tema in posibles_temas:
             if tema in request.form:
                 temas.append(tema)
-
+        
         glosa_otro = request.form.get("otroTema")
-        if not glosa_otro:
-            glosa_otro = "Null"
 
-        for tema in temas:
-            db.add_temas(tema, glosa_otro if tema == "otro2" else "Null", actividad.id)
 
+        if validate_agregar_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion) and validate_file(files) and validate_temas(temas, glosa_otro):
+            print("✅ Validación pasada")
+            actividad = db.create_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion)
+        
+            for file in files:
+                if file and file.filename:
+                    _filename = hashlib.sha256(
+                        secure_filename(file.filename) 
+                        .encode("utf-8") 
+                        ).hexdigest()
+                    _extension = filetype.guess(file).extension
+                    img_filename = f"{_filename}.{_extension}"
+                    
+                    file.save(os.path.join(app.config["UPLOAD_FOLDER"], img_filename))
+                
+                foto = db.add_fotos(os.path.join(app.config["UPLOAD_FOLDER"], img_filename), img_filename, actividad.id)
+                fotos.append(foto)
+
+            print("✅ Validación pasada")
+            if not glosa_otro:
+                glosa_otro = "Null"
+            for tema in temas:
+                db.add_temas(tema, glosa_otro if tema == "otro2" else "Null", actividad.id)
+
+        else:
+            error += "Uno de los campos no es valido. Vuelva al formulario y revise sus respuestas"
+
+            return render_template("formulario.html", error=error)
             
         return """
             <html>

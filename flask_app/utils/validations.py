@@ -1,6 +1,6 @@
 import re
 import filetype
-import datetime
+from datetime import datetime
 
 def validate_region(value):
     return value
@@ -41,8 +41,8 @@ def validate_contacto(value, otro=None):
 
 def validate_inicio(value):
     value = value.strip()
-    re = r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$'
-    return value and re.fullmatch(re, value) is not None
+    reg = r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$'
+    return value and re.fullmatch(reg, value) is not None
 
 def validate_termino(value_i, value_t):
     value_i = value_i.strip()
@@ -71,16 +71,18 @@ def validate_descripcion(value):
    value = value.strip()
    return len(value) > 3  or not value
 
-def validate_tema(value, otro=None):
-    if not value:
+def validate_temas(temas, otro_valor=None):
+
+    if not temas or len(temas) == 0:
         return False
 
-    if value == "Otro":
-        if not otro:
+    if "otro2" in temas:
+        if not otro_valor:
             return False
-        otro = otro.strip()
-        if len(otro) < 3 or len(otro) > 15:
+        otro_valor = otro_valor.strip()
+        if len(otro_valor) < 3 or len(otro_valor) > 15:
             return False
+
     return True
 
 def validate_file(value):
@@ -113,5 +115,8 @@ def validate_file(value):
             return False
     return True
 
+
+def validate_agregar_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion):
+    return validate_comuna(comuna) and validate_sector(sector) and validate_nombre(name) and validate_email(email) and validate_numero(numero) and validate_inicio(inicio) and validate_termino(inicio, termino) and validate_descripcion(descripcion)
 
 
