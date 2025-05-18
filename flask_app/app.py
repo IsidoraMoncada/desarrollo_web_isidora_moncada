@@ -47,7 +47,29 @@ def agregar_actividad():
 #Ruta para llegar al listado desde el indice
 @app.route('/ver_listado', methods=["GET"])
 def ver_listado():
-    return render_template('listado.html')
+    PAGE_SIZE = 5
+    data = []
+
+    for actividad in db.get_actividad(page_size=PAGE_SIZE):
+        comuna = db.get_comuna_by_id(actividad.comuna_id)
+        fotos = db.get_n_fotos(actividad.id)
+        tema = db.get_tema_by_actividad_id(actividad.id)
+        tema_final = ""
+        if tema.tema.value == "otro2":
+            tema_final = tema.glosa_otro
+        else:
+            tema_final = tema.tema.value
+
+        data.append({
+            "inicio": actividad.dia_hora_inicio,
+            "termino": actividad.dia_hora_termino,
+            "comuna": comuna.nombre,
+            "sector": actividad.sector,
+            "tema": tema_final,
+            "fotos": fotos,
+            "organizador": actividad.nombre
+        })
+    return render_template('listado.html', data = data)
 
 #Ruta para llegar a las estadisticas desde el indice
 @app.route('/ver_estadisticas',  methods=["GET"])
