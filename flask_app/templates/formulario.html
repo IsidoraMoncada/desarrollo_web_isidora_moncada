@@ -61,17 +61,19 @@
             <textarea id="descripcion" name="descripcion" rows="10" cols="50"></textarea> <br>
 
             <label for="tema">Tema</label>
-            <label><input type="checkbox" name="tema" value="música"> Música</label><br>
-            <label><input type="checkbox" name="tema" value="deporte"> Deporte</label><br>
-            <label><input type="checkbox" name="tema" value="ciencias"> Ciencias</label><br>
-            <label><input type="checkbox" name="tema" value="religión"> Religión</label><br>
-            <label><input type="checkbox" name="tema" value="política"> Política</label><br>
-            <label><input type="checkbox" name="tema" value="tecnología"> Tecnología</label><br>
-            <label><input type="checkbox" name="tema" value="juegos"> Juegos</label><br>
-            <label><input type="checkbox" name="tema" value="baile"> Baile</label><br>
-            <label><input type="checkbox" name="tema" value="comida"> Comida</label><br>
-            <label><input type="checkbox" id="check_otro" name="tema" value="otro" onchange="inputTema()"> Otro</label><br>
-
+            <div class="checkboxes_tema">
+              <input type="checkbox" name="música" value ="música"> Música<br>
+              <input type="checkbox" name="deporte" value ="deporte"> Deporte<br>
+              <input type="checkbox" name="ciencias" value ="ciencias"> Ciencias<br>
+              <input type="checkbox" name="religión" value ="religión"> Religión<br>
+              <input type="checkbox" name="política" value ="política"> Política<br>
+              <input type="checkbox" name="tecnología" value ="tecnología"> Tecnología<br>
+              <input type="checkbox" name="juegos" value ="juegos"> Juegos<br>
+              <input type="checkbox" name="baile" value ="baile"> Baile<br>
+              <input type="checkbox" name="comida" value ="comida"> Comida<br>
+              <input type="checkbox" id="check_otro" name="otro2" value ="otro2" onclick="inputTema()">Otro<br> 
+            </div>
+            
             <label for="file">Fotos</label>
             <div class="input_contenedor">
               <input type="file" name="file" id="file" accept="image/*" required> 

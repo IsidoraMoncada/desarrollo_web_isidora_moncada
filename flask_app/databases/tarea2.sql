@@ -110,7 +110,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tarea2`.`actividad_tema` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `tema` ENUM('música', 'deporte', 'ciencias', 'religión', 'política', 'tecnología', 'juegos', 'baile', 'comida', 'otro') NOT NULL,
+  `tema` ENUM('música', 'deporte', 'ciencias', 'religión', 'política', 'tecnología', 'juegos', 'baile', 'comida', 'otro2') NOT NULL,
   `glosa_otro` VARCHAR(15) NULL,
   `actividad_id` INT NOT NULL,
   PRIMARY KEY (`id`, `actividad_id`),

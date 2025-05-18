@@ -15,8 +15,9 @@ app.secret_key = "s3cr3t_k3y"
 #Ruta para volver al indice
 @app.route('/', methods=["GET"])
 def index():
-    if request.method == "GET":
-        return render_template('index.html')
+    
+
+    return render_template('index.html')
 
 #Ruta para llegar al form desde el index
 @app.route('/agregar_actividad', methods=["GET"])
@@ -76,6 +77,21 @@ def agrego_actividad():
             foto = db.add_fotos(os.path.join(app.config["UPLOAD_FOLDER"], img_filename), img_filename, actividad.id)
             fotos.append(foto)
 
+
+        posibles_temas = ["música", "deporte", "ciencias", "religión", "política", "tecnología", "juegos", "baile", "comida", "otro2"]
+        temas = []
+        for tema in posibles_temas:
+            if tema in request.form:
+                temas.append(tema)
+
+        glosa_otro = request.form.get("otroTema")
+        if not glosa_otro:
+            glosa_otro = "Null"
+
+        for tema in temas:
+            db.add_temas(tema, glosa_otro if tema == "otro2" else "Null", actividad.id)
+
+            
         return """
             <html>
             <head>

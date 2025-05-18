@@ -151,7 +151,7 @@ const inputTema = () => {
 
 const validateTema = (tema) => {
     const checkboxOtro = document.getElementById("check_otro");
-    const checkboxes = document.getElementsByName("tema");
+    const checkboxes = document.querySelectorAll(".checkboxes_tema input[type='checkbox']");
 
     let haySeleccion = false;
 
@@ -230,7 +230,7 @@ const validatemyForm = () => {
     let inicio = myForm["inicio"].value;
     let termino = myForm["termino"].value;
     let descripcion = myForm["descripcion"].value;
-    let tema = myForm["tema"].value;
+    let tema = [...document.querySelectorAll(".checkboxes_tema input:checked")].map(cb => cb.value);
     let files = document.getElementById('file');
 
     let invalidInputs = [];

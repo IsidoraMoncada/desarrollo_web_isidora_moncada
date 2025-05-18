@@ -120,33 +120,9 @@ const poblarContacto = () => {
     }
 }
 
-const data3 = {
-    "Musica": "Música",
-    "Deporte": "Deporte",
-    "Ciencias": "Ciencias",
-    "Religion": "Religión",
-    "Politica": "Política",
-    "Tecnologia": "Tecnología",
-    "Juegos": "Juegos",
-    "Baile": "Baile",
-    "Comida": "Comida",
-    "Otro": "Otro"
-};
-
-const poblarTema = () => {
-    let temaSelect = document.getElementById("tema");
-    for (const tema in data3) {
-      let option = document.createElement("option");
-      option.value = tema;
-      option.text = tema;
-      temaSelect.appendChild(option);
-    }
-}
 
 document.getElementById("region").addEventListener("change", updateComuna);
 
 window.onload = () => {
     poblarRegion();
-    poblarContacto();
-    poblarTema();
 };
