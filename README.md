@@ -8,7 +8,7 @@ En esta entrega se tomaron las siguientes decisiones:
 
 3. Los botones se distinguieron por color según su función, para mayor claridad.
 
-4. Por términos estéticos, las dimensiones indicadas en la tarea se aplicaron solo en el archivo HTML. Sin embargo, para que cada caja de texto fuera del mismo tamaño y se viera más armonioso le asignó el mismo estilo a cada una de las cajas en el css.
+4. Por términos estéticos, las dimensiones indicadas en la tarea se aplicaron solo en el archivo HTML. Sin embargo, para que cada caja de texto fuera del mismo tamaño y se viera más armonioso se le asignó el mismo estilo a cada una de las cajas en el css.
 
 5. El formulario se decidio dividirlo en secciones, en caso de ser ncesario utilizar solo algunas parte de ellas, para futuras tareas, quizas esto pueda servir para trabajar por partes de manera más ordenada. 
 
@@ -27,3 +27,13 @@ En esta entrega se tomaron las siguientes decisiones:
 12. En el listado no se sabía con certeza si en la descripción de la tarea cuando se decía total de fotos se pedía que se mostraran las mismas fotos o si se pedia el numero de fotos de la actividad.
 
 13. Con los input de las opciones que daban a escoger "Otro", se decidió crear de manera dinámica con javascript un contenedor para lo que se fuera a escribir.
+
+# Tarea 2 - Desarrollo Web
+
+Para esta segunda entrega se tomaron las siguientes decisiones:
+
+1. Al presionar el boton de agregar la actividad no es atendida por flask por mayor comodidad, solo es atendido por flask cuando ya se confirma que sea agregada a la base de datos. Con posibilidad de cambiarlo más adelante si se hace posible.
+
+2. El tema y la foto para el index solo fue agregado el primero encontrado en la base de datos para mejor visualización, sin embargo al desplegar la información si es posible verlas todas.
+
+3. Los botones de paginación se hicieron con los típicos triangulos utilizando principios de familiaridad.
