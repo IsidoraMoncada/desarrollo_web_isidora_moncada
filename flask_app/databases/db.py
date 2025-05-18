@@ -185,7 +185,18 @@ def add_temas(tema, glosa_otro, actividad_id):
 
 def get_actividad(page_size):
     session = SessionLocal()
-    actividad = session.query(Actividad).limit(page_size).all()
+    actividad = session.query(Actividad).order_by(Actividad.dia_hora_inicio.desc()).limit(page_size).all()
     session.close()
     return actividad
 
+def get_comuna_by_id(id):
+    session = SessionLocal()
+    comuna = session.query(Comuna).filter_by(id=id).first()
+    session.close()
+    return comuna
+
+def get_foto_by_actividad_id(actividad_id):
+    session = SessionLocal()
+    foto = session.query(Foto).filter_by(actividad_id=actividad_id).first()
+    session.close()
+    return foto

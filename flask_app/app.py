@@ -15,9 +15,23 @@ app.secret_key = "s3cr3t_k3y"
 #Ruta para volver al indice
 @app.route('/', methods=["GET"])
 def index():
-    
+    PAGE_SIZE = 5
+    data = []
 
-    return render_template('index.html')
+    for actividad in db.get_actividad(page_size=PAGE_SIZE):
+        comuna = db.get_comuna_by_id(actividad.comuna_id)
+        foto = db.get_foto_by_actividad_id(actividad.id)
+        ruta = foto.ruta_archivo
+
+        data.append({
+            "inicio": actividad.dia_hora_inicio,
+            "termino": actividad.dia_hora_termino,
+            "comuna": comuna.nombre,
+            "sector": actividad.sector,
+            #"tema": url_for('static', filename=conf_img),
+            "foto": ruta
+        })
+    return render_template('index.html', data=data)
 
 #Ruta para llegar al form desde el index
 @app.route('/agregar_actividad', methods=["GET"])

@@ -134,8 +134,6 @@ const inputTema = () => {
         input.type = "text";
         input.id = "otroTema";
         input.name = "otroTema";
-        input.minLength = 3;
-        input.maxLength = 15;
         
         div.appendChild(label);
         div.appendChild(input);
