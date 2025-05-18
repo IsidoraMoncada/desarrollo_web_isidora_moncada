@@ -30,7 +30,7 @@
                 </tr>
                 {% for actividad in data%}
                 <tr>
-                    <td>{{ actividad.inicio }}</td><td>{{ actividad.termino }}</td><td>{{ actividad.comuna }}</td><td>{{ actividad.sector }}</td><td>Tema</td><td><img src="{{ actividad.foto }}" alt="Foto de la actividad" width="120" ></td>
+                    <td>{{ actividad.inicio }}</td><td>{{ actividad.termino }}</td><td>{{ actividad.comuna }}</td><td>{{ actividad.sector }}</td><td>{{ actividad.tema }}</td><td><img src="{{ actividad.foto }}" alt="Foto de la actividad" width="120" ></td>
                 </tr>
                 {% endfor%}
             {% endif %}

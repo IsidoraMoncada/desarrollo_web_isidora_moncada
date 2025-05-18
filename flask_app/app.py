@@ -22,13 +22,19 @@ def index():
         comuna = db.get_comuna_by_id(actividad.comuna_id)
         foto = db.get_foto_by_actividad_id(actividad.id)
         ruta = foto.ruta_archivo
+        tema = db.get_tema_by_actividad_id(actividad.id)
+        tema_final = ""
+        if tema.tema.value == "otro2":
+            tema_final = tema.glosa_otro
+        else:
+            tema_final = tema.tema.value
 
         data.append({
             "inicio": actividad.dia_hora_inicio,
             "termino": actividad.dia_hora_termino,
             "comuna": comuna.nombre,
             "sector": actividad.sector,
-            #"tema": url_for('static', filename=conf_img),
+            "tema": tema_final,
             "foto": ruta
         })
     return render_template('index.html', data=data)

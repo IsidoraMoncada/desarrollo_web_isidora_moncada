@@ -200,3 +200,9 @@ def get_foto_by_actividad_id(actividad_id):
     foto = session.query(Foto).filter_by(actividad_id=actividad_id).first()
     session.close()
     return foto
+
+def get_tema_by_actividad_id(actividad_id):
+    session = SessionLocal()
+    tema = session.query(ActividadTema).filter_by(actividad_id=actividad_id).first()
+    session.close()
+    return tema
