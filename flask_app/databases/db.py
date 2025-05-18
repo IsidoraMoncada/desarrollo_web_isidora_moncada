@@ -212,3 +212,16 @@ def get_n_fotos(actividad_id):
     fotos = session.query(Foto).filter_by(actividad_id=actividad_id).count()
     session.close()
     return fotos
+
+def get_actividad_page(page, page_size):
+    session = SessionLocal()
+    offset = (page - 1) * page_size
+    actividades = session.query(Actividad).order_by(Actividad.dia_hora_inicio.desc()).offset(offset).limit(page_size).all()
+    session.close()
+    return actividades
+
+def get_total_actividades():
+    session = SessionLocal()
+    total = session.query(Actividad).count()
+    session.close()
+    return total

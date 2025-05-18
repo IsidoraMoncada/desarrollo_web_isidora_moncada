@@ -4,7 +4,9 @@ import hashlib
 import os
 import filetype
 from databases import db
-from databases.db import TemaEnum
+from databases.db import TemaEnum, Actividad
+from math import ceil
+
 
 UPLOAD_FOLDER = 'static/uploads'
 app = Flask(__name__)
@@ -49,8 +51,12 @@ def agregar_actividad():
 def ver_listado():
     PAGE_SIZE = 5
     data = []
+    page_num = request.args.get('page', 1, type=int)
+    actividades = db.get_actividad_page(page=page_num, page_size=PAGE_SIZE)
+    total_actividades = db.get_total_actividades()
+    total_paginas = ceil(total_actividades / PAGE_SIZE)
 
-    for actividad in db.get_actividad(page_size=PAGE_SIZE):
+    for actividad in actividades:
         comuna = db.get_comuna_by_id(actividad.comuna_id)
         fotos = db.get_n_fotos(actividad.id)
         tema = db.get_tema_by_actividad_id(actividad.id)
@@ -69,7 +75,8 @@ def ver_listado():
             "fotos": fotos,
             "organizador": actividad.nombre
         })
-    return render_template('listado.html', data = data)
+    
+    return render_template('listado.html', data=data, page=page_num, total_pages=total_paginas)
 
 #Ruta para llegar a las estadisticas desde el indice
 @app.route('/ver_estadisticas',  methods=["GET"])

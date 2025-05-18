@@ -21,6 +21,15 @@
             {% endif %}
         </table>
         <br>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('ver_listado', page=page-1) }}"><div class="arrow-left"></div></a>
+            {% endif %}
+                
+            {% if not page == total_pages %}
+                <a href="{{ url_for('ver_listado', page=page+1) }}"><div class="arrow-right"></div></a>
+            {% endif %}
+        </div>
         <div class="menu-botones">
             <a href="{{ url_for('index') }}"><button type="submit" id="volver">Volver</button></a> 
         </div>
