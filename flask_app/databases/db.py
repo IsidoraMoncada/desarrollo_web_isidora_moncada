@@ -231,3 +231,16 @@ def get_actividad_by_id(id):
     actividad_by_id = session.query(Actividad).filter_by(id=id).first()
     session.close()
     return actividad_by_id
+
+
+def get_temas(actividad_id):
+    session = SessionLocal()
+    temas = session.query(ActividadTema).filter_by(actividad_id=actividad_id).all()
+    session.close()
+    return temas
+
+def get_fotos(actividad_id):
+    session = SessionLocal()
+    fotos = session.query(Foto).filter_by(actividad_id=actividad_id).all()
+    session.close()
+    return fotos

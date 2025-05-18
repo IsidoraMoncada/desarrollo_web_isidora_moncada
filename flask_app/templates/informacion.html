@@ -13,17 +13,19 @@
             <div>Fecha y hora de término: {{ actividad.termino }}</div><br>
             <div>Comuna: {{ actividad.comuna }}</div><br>
             <div>Sector: {{ actividad.sector }}</div><br>
-            <div>Tema: {{ actividad.tema }} </div><br>
+            <div>Tema: {% for tema in temas %}{{ tema.tema }}{% if not loop.last %}, {% endif %}{% endfor %}.</div><br>
             <div>Nombre del organizador:  {{ actividad.organizador }} </div><br>
             <div>Descripción: {{ actividad.descripcion }}</div><br>
             <div> Imágenes de la actividad
+                {% for foto in fotos%}
                 <br>
                 <br>
                 <button id="imagen" type="button"> 
                     <span class="contenedor-img">
-                        <img src="../images/plantas.jpg" alt="" class="imagen-ajustada"> 
+                        <img src="{{ foto.imagen }}" alt="Fotos de la actividad" onclick="validarimagen(this)">
                     </span>
                 </button>
+                {% endfor %}
             </div><br>
             <div>
             {% endfor%}

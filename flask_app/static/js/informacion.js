@@ -6,11 +6,11 @@ const validarmenu = () => {
     window.location.href = "./index.html";  
 };
 
-const validarimagen = () => {
+const validarimagen = (elem) => {
   
     let abririmagen = document.createElement("img");
     abririmagen.id = "imagengrande"
-    abririmagen.src = "../images/plantas.jpg";
+    abririmagen.src = elem.src;
   
     abririmagen.style.width = "600px"; 
     abririmagen.style.height = "800px"; 
@@ -57,6 +57,3 @@ submitBtn1.addEventListener("click", validarlistado);
 
 let submitBtn2 = document.getElementById("menu");
 submitBtn2.addEventListener("click", validarmenu);
-
-let submitBtn3 = document.getElementById("imagen");
-submitBtn3.addEventListener("click", validarimagen);

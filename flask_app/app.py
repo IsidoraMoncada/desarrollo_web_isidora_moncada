@@ -180,14 +180,6 @@ def informacion(id):
     data = []
     actividad = db.get_actividad_by_id(id)
     comuna = db.get_comuna_by_id(actividad.comuna_id)
-    foto = db.get_foto_by_actividad_id(actividad.id)
-    ruta = foto.ruta_archivo
-    tema = db.get_tema_by_actividad_id(actividad.id)
-    tema_final = ""
-    if tema.tema.value == "otro2":
-        tema_final = tema.glosa_otro
-    else:
-        tema_final = tema.tema.value
 
     data.append({
         "id": actividad.id,
@@ -195,12 +187,30 @@ def informacion(id):
         "termino": actividad.dia_hora_termino,
         "comuna": comuna.nombre,
         "sector": actividad.sector,
-        "tema": tema_final,
         "descripcion": actividad.descripcion,
         "organizador": actividad.nombre,
-        "foto": ruta
     })
-    return render_template('informacion.html', data=data)
+    
+    temas = []
+    tema_final = ""
+    for tema in db.get_temas(actividad.id):
+        if tema.tema.value == "otro2":
+            tema_final = tema.glosa_otro
+        else:
+            tema_final = tema.tema.value
+
+        temas.append({
+            "tema": tema_final
+        })
+    
+    fotos = []
+    for foto in db.get_fotos(actividad.id):
+        foto_img = f"uploads/{foto.nombre_archivo}"
+        fotos.append({
+            "imagen": url_for('static', filename=foto_img)
+        })
+        
+    return render_template('informacion.html', data=data, temas=temas, fotos=fotos)
 
 if __name__ == "__main__":
     app.run(debug=True)
