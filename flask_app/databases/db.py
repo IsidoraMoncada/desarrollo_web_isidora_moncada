@@ -89,16 +89,16 @@ class ContactarPor(Base):
     actividad = relationship("Actividad", back_populates="contactos")
 
 class TemaEnum(str, enum.Enum):
-    música = "música"
-    deporte = "deporte"
-    ciencias = "ciencias"
-    religión = "religión"
-    política = "política"
-    tecnología = "tecnología"
-    juegos = "juegos"
-    baile = "baile"
-    comida = "comida"
-    otro2 = "otro2"
+    Música = "Música"
+    Deporte = "Deporte"
+    Ciencias = "Ciencias"
+    Religión = "Religión"
+    Política = "Política"
+    Tecnología = "Tecnología"
+    Juegos = "Juegos"
+    Baile = "Baile"
+    Comida = "Comida"
+    Otro = "Otro"
 
 #Creación de tabla actividad_tema
 class ActividadTema(Base):
@@ -172,7 +172,7 @@ def add_temas(tema, glosa_otro, actividad_id):
 
     temas = ActividadTema(
         tema = tema,
-        glosa_otro=glosa_otro if tema.lower() == "otro2" else "Null",
+        glosa_otro=glosa_otro if tema == "Otro" else "Null",
         actividad_id = actividad_id
     )
 

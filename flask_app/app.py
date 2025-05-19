@@ -27,7 +27,7 @@ def index():
         ruta = foto.ruta_archivo
         tema = db.get_tema_by_actividad_id(actividad.id)
         tema_final = ""
-        if tema.tema.value == "otro2":
+        if tema.tema.value == "Otro":
             tema_final = tema.glosa_otro
         else:
             tema_final = tema.tema.value
@@ -62,7 +62,7 @@ def ver_listado():
         fotos = db.get_n_fotos(actividad.id)
         tema = db.get_tema_by_actividad_id(actividad.id)
         tema_final = ""
-        if tema.tema.value == "otro2":
+        if tema.tema.value == "Otro":
             tema_final = tema.glosa_otro
         else:
             tema_final = tema.tema.value
@@ -112,7 +112,7 @@ def agrego_actividad():
         files = request.files.getlist("file")
         fotos = []
 
-        posibles_temas = ["música", "deporte", "ciencias", "religión", "política", "tecnología", "juegos", "baile", "comida", "otro2"]
+        posibles_temas = ["Música", "Deporte", "Ciencias", "Religión", "Política", "Tecnología", "Juegos", "Baile", "Comida", "Otro"]
         temas = []
         for tema in posibles_temas:
             if tema in request.form:
@@ -139,11 +139,10 @@ def agrego_actividad():
                 foto = db.add_fotos(os.path.join(app.config["UPLOAD_FOLDER"], img_filename), img_filename, actividad.id)
                 fotos.append(foto)
 
-            print("✅ Validación pasada")
             if not glosa_otro:
                 glosa_otro = "Null"
             for tema in temas:
-                db.add_temas(tema, glosa_otro if tema == "otro2" else "Null", actividad.id)
+                db.add_temas(tema, glosa_otro if tema == "Otro" else "Null", actividad.id)
 
         else:
             error += "Uno de los campos no es valido. Vuelva al formulario y revise sus respuestas"
@@ -151,7 +150,8 @@ def agrego_actividad():
             return render_template("formulario.html", error=error)
             
         return """
-            <html>
+            <!DOCTYPE html>
+            <html lang="es">
             <head>
                 <title>Confirmación</title>
                 <style>
@@ -202,7 +202,7 @@ def informacion(id):
     temas = []
     tema_final = ""
     for tema in db.get_temas(actividad.id):
-        if tema.tema.value == "otro2":
+        if tema.tema.value == "Otro":
             tema_final = tema.glosa_otro
         else:
             tema_final = tema.tema.value

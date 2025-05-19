@@ -26,7 +26,7 @@ td {
     border: 1px solid black;
 }
 
-button#volver {
+.boton-volver {
     width: 100%;
     padding: 10px;
     background-color: #ae804b;
@@ -38,9 +38,10 @@ button#volver {
     margin-bottom: 10px; 
 
 }
-button#volver:hover {
+.boton-volver:hover {
     background-color: #715331;
 }
+
 .menu-botones {
     width: 15%;
     margin-top: 20px;

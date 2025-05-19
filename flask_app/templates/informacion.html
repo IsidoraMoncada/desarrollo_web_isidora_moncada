@@ -27,17 +27,14 @@
                 </button>
                 {% endfor %}
             </div><br>
-            <div>
             {% endfor%}
         {% endif %}
-            <a href="{{ url_for('index') }}"><button type="submit" id="menu">Volver al menú</button></a> 
+        <div class="menu-botones">
+            <a href="{{ url_for('index') }}" class="boton-volver">Volver al menú</a>
+            <a href="{{ url_for('ver_listado') }}" class="boton-volver">Volver al listado</a>
         </div>
-        <div>
-            <a href="{{ url_for('ver_listado') }}"><button type="submit" id="listado">Volver al listado</button></a> 
-        </div>
-
     </div>
 {% endblock %}
 {% block javascript %}
-<script lang="javascript" src="{{ url_for('static', filename='js/informacion.js') }}"></script>
+<script src="/static/js/informacion.js"></script>
 {% endblock %}

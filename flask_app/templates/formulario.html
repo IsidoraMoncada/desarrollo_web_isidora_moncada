@@ -62,18 +62,18 @@
             <label for="descripcion">Descripción del evento</label>
             <textarea id="descripcion" name="descripcion" rows="10" cols="50"></textarea> <br>
 
-            <label for="tema">Tema</label>
+            <label>Tema</label>
             <div class="checkboxes_tema">
-              <input type="checkbox" name="música" value ="música"> Música<br>
-              <input type="checkbox" name="deporte" value ="deporte"> Deporte<br>
-              <input type="checkbox" name="ciencias" value ="ciencias"> Ciencias<br>
-              <input type="checkbox" name="religión" value ="religión"> Religión<br>
-              <input type="checkbox" name="política" value ="política"> Política<br>
-              <input type="checkbox" name="tecnología" value ="tecnología"> Tecnología<br>
-              <input type="checkbox" name="juegos" value ="juegos"> Juegos<br>
-              <input type="checkbox" name="baile" value ="baile"> Baile<br>
-              <input type="checkbox" name="comida" value ="comida"> Comida<br>
-              <input type="checkbox" id="check_otro" name="otro2" value ="otro2" onclick="inputTema()">Otro<br> 
+              <input type="checkbox" name="Música" value ="Música"> Música<br>
+              <input type="checkbox" name="Deporte" value ="Deporte"> Deporte<br>
+              <input type="checkbox" name="Ciencias" value ="Ciencias"> Ciencias<br>
+              <input type="checkbox" name="Religión" value ="Religión"> Religión<br>
+              <input type="checkbox" name="Política" value ="Política"> Política<br>
+              <input type="checkbox" name="Tecnología" value ="Tecnología"> Tecnología<br>
+              <input type="checkbox" name="Juegos" value ="Juegos"> Juegos<br>
+              <input type="checkbox" name="Baile" value ="Baile"> Baile<br>
+              <input type="checkbox" name="Comida" value ="Comida"> Comida<br>
+              <input type="checkbox" id="check_otro" name="Otro" value ="Otro" onclick="inputTema()">Otro<br> 
             </div>
             
             <label for="file">Fotos</label>
@@ -95,7 +95,7 @@
     </div>
 {% endblock %}
 {% block javascript %}
-<script lang="javascript" src="{{ url_for('static', filename='js/formulario.js') }}"></script>
-<script lang="javascript" src="{{ url_for('static', filename='js/select.js') }}"></script>
+<script src="/static/js/select.js"></script>
+<script src="/static/js/formulario.js"></script>
 
 {% endblock %}

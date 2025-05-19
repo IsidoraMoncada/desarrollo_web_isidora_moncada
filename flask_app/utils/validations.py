@@ -76,7 +76,7 @@ def validate_temas(temas, otro_valor=None):
     if not temas or len(temas) == 0:
         return False
 
-    if "otro2" in temas:
+    if "Otro" in temas:
         if not otro_valor:
             return False
         otro_valor = otro_valor.strip()
