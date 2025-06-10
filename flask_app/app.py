@@ -1,12 +1,15 @@
-from flask import Flask, request, render_template, redirect, url_for, session, render_template_string
+from flask import Flask, request, render_template, redirect, url_for, session, render_template_string, jsonify
 from werkzeug.utils import secure_filename
 import hashlib
 import os
 from utils.validations import validate_agregar_actividad, validate_file, validate_temas
 import filetype
 from databases import db
-from databases.db import TemaEnum, Actividad
+from databases.db import TemaEnum, Actividad,  SessionLocal
 from math import ceil
+from sqlalchemy import func, cast, Date
+from flask_cors import cross_origin
+
 
 
 UPLOAD_FOLDER = 'static/uploads'
@@ -79,11 +82,6 @@ def ver_listado():
         })
     
     return render_template('listado.html', data=data, page=page_num, total_pages=total_paginas)
-
-#Ruta para llegar a las estadisticas desde el indice
-@app.route('/ver_estadisticas',  methods=["GET"])
-def ver_estadisticas():
-    return render_template('estadisticas.html')
 
 #Ruta para volver al formulario, utiliza una ruta antes creada y vuelve a llenar con los datos que antes se llenaron si es que el usuario se arrepiente
 @app.route('/volver_formulario')
@@ -219,6 +217,27 @@ def informacion(id):
         })
         
     return render_template('informacion.html', data=data, temas=temas, fotos=fotos)
+
+
+@app.route("/get_actividades_por_dia", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_actividades_por_dia():
+    session = SessionLocal()  
+
+    try:
+        fecha = cast(Actividad.dia_hora_inicio, Date)
+        actividades_por_dia = (session.query(fecha, func.count().label("cantidad")).group_by(fecha).order_by(fecha).all())
+        fechas = [str(fecha) for fecha, _ in actividades_por_dia]
+        cantidades = [cantidad for _, cantidad in actividades_por_dia]
+        return jsonify({'fechas': fechas, 'cantidades': cantidades})
+    
+    finally:
+        session.close()
+
+#Ruta para llegar a las estadisticas desde el indice
+@app.route('/ver_estadisticas',  methods=["GET"])
+def ver_estadisticas():
+    return render_template('estadisticas.html')   
 
 if __name__ == "__main__":
     app.run(debug=True)

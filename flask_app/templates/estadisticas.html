@@ -7,7 +7,9 @@
 {% block content %}
     <h1>Estadísticas</h1>
     <h2>Cantidad de actividades por día</h2>
-    <img src="../static/images/lineas.jpg" alt="" height="400"><br>
+    <figure class="highcharts-figure">
+        <div id="container"></div>
+    </figure>
     <h2>Cantidad total de actividades por tipo</h2>
     <img src="../static/images/torta.jpg" alt="" height="400"><br>
     <h2>Cantidad de actividades en el mes por jornada</h2>
@@ -19,5 +21,6 @@
     </div>
 {% endblock %}
 {% block javascript %}
-
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="{{url_for('static', filename='js/stats.js')}}"></script>
 {% endblock %}
