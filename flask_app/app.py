@@ -5,7 +5,7 @@ import os
 from utils.validations import validate_agregar_actividad, validate_file, validate_temas
 import filetype
 from databases import db
-from databases.db import TemaEnum, Actividad,  SessionLocal
+from databases.db import TemaEnum, Actividad, ActividadTema, SessionLocal
 from math import ceil
 from sqlalchemy import func, cast, Date
 from flask_cors import cross_origin
@@ -238,6 +238,20 @@ def get_actividades_por_dia():
 @app.route('/ver_estadisticas',  methods=["GET"])
 def ver_estadisticas():
     return render_template('estadisticas.html')   
+
+@app.route("/get_n_actividades_por_tipo", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_n_actividades_por_tipo():
+    session = SessionLocal()  
+
+    try:
+        temas_tupla = session.query(ActividadTema.tema).distinct().all()
+        temas = [t[0] for t in temas_tupla]
+        cantidades = [session.query(ActividadTema).filter_by(tema=tema).count() for tema in temas]
+        return jsonify({'temas': temas, 'cantidades': cantidades})
+    
+    finally:
+        session.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
