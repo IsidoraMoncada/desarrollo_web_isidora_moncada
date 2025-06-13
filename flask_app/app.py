@@ -2,13 +2,14 @@ from flask import Flask, request, render_template, redirect, url_for, session, r
 from werkzeug.utils import secure_filename
 import hashlib
 import os
-from utils.validations import validate_agregar_actividad, validate_file, validate_temas
+from utils.validations import validate_agregar_actividad, validate_file, validate_temas, validate_agregar_comentario
 import filetype
 from databases import db
-from databases.db import TemaEnum, Actividad, ActividadTema, SessionLocal
+from databases.db import TemaEnum, Actividad, ActividadTema, SessionLocal, Comentario
 from math import ceil
 from sqlalchemy import func, cast, Date
 from flask_cors import cross_origin
+from datetime import datetime
 
 
 
@@ -181,42 +182,62 @@ def agrego_actividad():
         return redirect(url_for("agrego_actividad"))
 
 #Ruta para volver al formulario, utiliza una ruta antes creada y vuelve a llenar con los datos que antes se llenaron si es que el usuario se arrepiente
-@app.route('/informacion/<int:id>')
+@app.route('/informacion/<int:id>', methods=["GET", "POST"])
 def informacion(id):
-    data = []
-    actividad = db.get_actividad_by_id(id)
-    comuna = db.get_comuna_by_id(actividad.comuna_id)
+    if request.method == "POST":
 
-    data.append({
-        "id": actividad.id,
-        "inicio": actividad.dia_hora_inicio,
-        "termino": actividad.dia_hora_termino,
-        "comuna": comuna.nombre,
-        "sector": actividad.sector,
-        "descripcion": actividad.descripcion,
-        "organizador": actividad.nombre,
-    })
+        actividad_id = request.form.get("actividad_id")
+        nombre = request.form.get("nombre")
+        comentario = request.form.get("comentario")
+        fecha = datetime.now()
+
+        error = ""
+
     
-    temas = []
-    tema_final = ""
-    for tema in db.get_temas(actividad.id):
-        if tema.tema.value == "Otro":
-            tema_final = tema.glosa_otro
+        if validate_agregar_comentario(nombre, comentario):
+            print("✅ Validación pasada")
+            db.create_comentario(nombre, comentario, fecha, actividad_id)
+            return redirect(url_for('informacion', id=actividad_id))
+        
         else:
-            tema_final = tema.tema.value
+            error += "Uno de los campos no es valido. Porfavor revise sus respuestas."
 
-        temas.append({
-            "tema": tema_final
-        })
-    
-    fotos = []
-    for foto in db.get_fotos(actividad.id):
-        foto_img = f"uploads/{foto.nombre_archivo}"
-        fotos.append({
-            "imagen": url_for('static', filename=foto_img)
+            return render_template("informacion.html", error=error)
+    else:
+        data = []
+        actividad = db.get_actividad_by_id(id)
+        comuna = db.get_comuna_by_id(actividad.comuna_id)
+
+        data.append({
+            "id": actividad.id,
+            "inicio": actividad.dia_hora_inicio,
+            "termino": actividad.dia_hora_termino,
+            "comuna": comuna.nombre,
+            "sector": actividad.sector,
+            "descripcion": actividad.descripcion,
+            "organizador": actividad.nombre,
         })
         
-    return render_template('informacion.html', data=data, temas=temas, fotos=fotos)
+        temas = []
+        tema_final = ""
+        for tema in db.get_temas(actividad.id):
+            if tema.tema.value == "Otro":
+                tema_final = tema.glosa_otro
+            else:
+                tema_final = tema.tema.value
+
+            temas.append({
+                "tema": tema_final
+            })
+        
+        fotos = []
+        for foto in db.get_fotos(actividad.id):
+            foto_img = f"uploads/{foto.nombre_archivo}"
+            fotos.append({
+                "imagen": url_for('static', filename=foto_img)
+            })
+            
+        return render_template('informacion.html', data=data, temas=temas, fotos=fotos)
 
 
 @app.route("/get_actividades_por_dia", methods=["GET"])
@@ -250,6 +271,20 @@ def get_n_actividades_por_tipo():
         cantidades = [session.query(ActividadTema).filter_by(tema=tema).count() for tema in temas]
         return jsonify({'temas': temas, 'cantidades': cantidades})
     
+    finally:
+        session.close()
+
+@app.route("/get_comentarios", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_comentarios():
+    session = SessionLocal()
+    actividad_id = request.args.get("actividad_id", type=int)   
+    try:
+        comentarios = session.query(Comentario).filter_by(actividad_id=actividad_id).all()
+        textos = [c.nombre for c in comentarios]
+        fechas = [str(c.fecha.date()) for c in comentarios]
+        nombres = [c.texto for c in comentarios]
+        return jsonify({'textos': textos, 'fechas': fechas, 'nombres':nombres})
     finally:
         session.close()
 

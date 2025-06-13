@@ -119,4 +119,13 @@ def validate_file(value):
 def validate_agregar_actividad(comuna, sector, name, email, numero, inicio, termino, descripcion):
     return validate_comuna(comuna) and validate_sector(sector) and validate_nombre(name) and validate_email(email) and validate_numero(numero) and validate_inicio(inicio) and validate_termino(inicio, termino) and validate_descripcion(descripcion)
 
+def validate_nombre_comentario(value):
+    value = value.strip()
+    return value and len(value) <= 80 and len(value) > 2
 
+def validate_comentario(value):
+    value = value.strip()
+    return value and len(value) > 4
+
+def validate_agregar_comentario(nombre, comentario):
+    return validate_nombre_comentario(nombre) and validate_comentario(comentario)

@@ -131,3 +131,23 @@ const validateNuevoComentario = () => {
 
 let agregarBtn = document.getElementById("botonComentario");
 agregarBtn.addEventListener("click", validateNuevoComentario);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const actividadId = document.querySelector('input[name="actividad_id"]').value;
+
+  fetch(`/get_comentarios?actividad_id=${actividadId}`)
+    .then(response => response.json())
+    .then(data => {
+      const contenedor = document.getElementById('lista-comentarios');
+      contenedor.innerHTML = "<h2>Comentarios</h2>";
+      data.nombres.forEach((nombre, i) => {
+        const comentarioHTML = `
+          <div class="comentario">
+            <p><strong>${nombre}</strong> ${data.fechas[i]}:</p>
+            <p>${data.textos[i]}</p>
+          </div>`;
+        contenedor.innerHTML += comentarioHTML;
+      });
+    })
+    .catch(error => console.error('Error al obtener comentarios:', error));
+});

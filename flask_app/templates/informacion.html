@@ -27,25 +27,28 @@
                 </button>
                 {% endfor %}
             </div><br>
+            <div id="lista-comentarios"></div><br>
+            <div class="container">
+                <div id="val-box" hidden>
+                    <div id="val-msg"></div>
+                    <ul id="val-list"></ul>
+                  </div>
+                <form id= "comentarioForm" name="comentarioForm" method="POST" action="{{ url_for('informacion', id=actividad.id) }}"  enctype="multipart/form-data">
+                    <h2>Nuevo comentario</h2>
+
+                    <input type="hidden" name="actividad_id" value="{{ actividad.id }}">
+
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="nombre" id="nombre" minlength="3" maxlength="80" required><br>
+        
+                    <label for="comentario">Comentario</label>
+                    <textarea id="comentario" name="comentario" rows="4" cols="50" minlength="5" required></textarea><br> 
+        
+                    <button id="botonComentario" type="submit" class="boton-volver">Agregar comentario</button>
+                </form>
+            </div>
             {% endfor%}
         {% endif %}
-        <div class="container">
-            <div id="val-box" hidden>
-                <div id="val-msg"></div>
-                <ul id="val-list"></ul>
-              </div>
-            <form id= "comentarioForm" name="comentarioForm" method="post" enctype="multipart/form-data">
-                <h2>Nuevo comentario</h2>
-    
-                <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" id="nombre" minlength="3" maxlength="80" required><br>
-    
-                <label for="comentario">Comentario</label>
-                <textarea id="comentario" name="comentario" rows="4" cols="50" minlength="5" required></textarea><br> 
-    
-                <button id="botonComentario" type="button" class="boton-volver">Agregar comentario</button>
-            </form>
-        </div>
         
         <div class="menu-botones">
             <a href="{{ url_for('index') }}" id = "menu" class="boton-volver">Volver al menú</a>

@@ -1,5 +1,5 @@
 import pymysql
-from sqlalchemy import create_engine, Column, Integer, DateTime, BigInteger, String, ForeignKey, Enum
+from sqlalchemy import create_engine, Column, Integer, DateTime, BigInteger, String, ForeignKey, Enum, TIMESTAMP
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 import enum
 import json
@@ -57,6 +57,8 @@ class Actividad(Base):
     fotos = relationship("Foto", back_populates="actividad")
     contactos = relationship("ContactarPor", back_populates="actividad")
     temas = relationship("ActividadTema", back_populates="actividad")
+    comentarios = relationship("Comentario", back_populates="actividad")
+
 
 #Creación de tabla foto
 class Foto(Base):
@@ -111,6 +113,17 @@ class ActividadTema(Base):
 
     actividad = relationship("Actividad", back_populates="temas")
 
+class Comentario(Base):
+    __tablename__ = 'comentario'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(TIMESTAMP, nullable=False)
+    actividad_id = Column(Integer, ForeignKey('actividad.id', ondelete='NO ACTION', onupdate='NO ACTION'), nullable=False)
+
+    actividad = relationship("Actividad", back_populates="comentarios")
+
 Base.metadata.create_all(engine)
 
 
@@ -135,6 +148,23 @@ def create_actividad(comuna_id, sector, nombre, email, celular, dia_hora_inicio,
     session.close()
 
     return nueva_actividad
+
+def create_comentario(nombre, texto, fecha, actividad_id):
+    session = SessionLocal()
+
+    nuevo_comentario = Comentario(
+        nombre = nombre,
+        texto = texto,
+        fecha = fecha,
+        actividad_id = actividad_id
+    )
+
+    session.add(nuevo_comentario)
+    session.commit()
+    session.refresh(nuevo_comentario)
+    session.close()
+
+    return nuevo_comentario
 
 def add_fotos(ruta_archivo, nombre_archivo, actividad_id):
     session = SessionLocal()
