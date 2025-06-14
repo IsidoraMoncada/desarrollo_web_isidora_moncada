@@ -37,3 +37,11 @@ Para esta segunda entrega se tomaron las siguientes decisiones:
 2. El tema y la foto para el index solo fue agregado el primero encontrado en la base de datos para mejor visualización, sin embargo al desplegar la información si es posible verlas todas.
 
 3. Los botones de paginación se hicieron con los típicos triangulos utilizando principios de familiaridad.
+
+# Tarea 3 - Desarrollo Web
+
+Para esta tercera tarea se tomaron las siguientes decisiones:
+
+1. Dado que no se alcanzó a hacer todos los gráficos se dejó uno de ellos estático.
+
+2. Los comentarios se hicieron en un listado sobre el formulario para agregar comentarios.
